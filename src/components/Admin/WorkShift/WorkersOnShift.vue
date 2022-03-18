@@ -1,57 +1,73 @@
 <template>
-  <div class="wrap">
+  <div class=wrap>
     <div>
-      <h2>Сотрудники</h2>
-      <router-link :to="{name:'createWorkers'}">
-        <button>Добавить</button>
-      </router-link>
+      <h2>Сотрудники на смене</h2>
+      <button @click="openModal">Добавить</button>
     </div>
-
+    <AddWorkerOnShift v-if="modalOpen" @close="openModal"></AddWorkerOnShift>
     <section class="employees">
       <article class="card">
         <div>
           <span>Имя</span>
-          <span>Статус</span>
           <span>Должность</span>
           <span>Редактирование</span>
         </div>
-        <div v-for="user in users" :key="user.id" :id="user.id">
+        <div v-for="user in workers" :key="user.id" :id="user.id">
           <span>{{ user.name }}</span>
-          <span>{{ user.status }}</span>
           <span>{{ user.group }}</span>
           <router-link :to="{ name: 'worker',params: { id: user.id }}" class="link" v-if="user.status!=='fired'">
-            Подробнее
+            Удалить
           </router-link>
-          <router-link :to="{ name: 'worker',params: { id: user.id }}" class="link" v-if="user.status==='fired'">
-          </router-link>
+
         </div>
       </article>
     </section>
   </div>
-
 </template>
 
 <script>
+
+import AddWorkerOnShift from "@/components/Admin/WorkShift/AddWorkerOnShift";
+
 export default {
-  name: "Workers",
+  name: "WorkersOnShift",
+  components: {AddWorkerOnShift},
   data() {
     return {
-      users: [],
-      openModal: false,
-      error: false,
-    };
+      modalOpen: false,
+      workShift: [],
+      workers: [],
+    }
   },
   async mounted() {
-    this.users = await this.$store.dispatch("GetUsers");
+    this.workShift = await this.$store.dispatch('GetWorkersOnShift', this.$route.params.id);
+    this.workers = this.workShift.users
+
   },
-};
+  methods: {
+    openModal() {
+      this.modalOpen = !this.modalOpen;
+    }
+  }
+}
 </script>
 
-<style scoped>
+<style>
 
-.wrap{
+AddWorkerOnShift{
+  background: rgba(0,0,0,.5);
+}
+
+
+.wrap {
   display: flex;
   flex-direction: column;
+}
+
+.wrap > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 75px;
 }
 
 button {
@@ -76,8 +92,9 @@ button {
   background-color: rgba(75, 152, 224, 0.8);
 }
 
-.employees > :first-child > div > span, a {
+.employees > :first-child > div > span, .link {
   text-align: center;
+  width: 33%;
   font-size: 18pt;
 }
 
@@ -86,7 +103,6 @@ button {
 }
 
 .link {
-  width: 25%;
   color: black;
   font-size: 20px;
 }

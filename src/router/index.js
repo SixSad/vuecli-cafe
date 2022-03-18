@@ -2,12 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import IndexView from '../views/IndexView.vue'
 import LoginView from "@/views/LoginView";
-import OrdersView from "@/views/OrdersView";
 import WorkersView from "@/views/WorkersView";
 import WorkerView from "@/views/WorkerView";
 import CreateWorkersView from "@/views/CreateWorkersView";
 import WorkShiftsView from "@/views/WorkShiftsView";
 import CreateWorkShiftsView from "@/views/CreateWorkShiftsView";
+import WorkersOnShiftView from "@/views/WorkersOnShiftView";
+import CookOrderView from "@/views/CookOrderView";
+import WaiterOrdersView from "@/views/WaiterOrdersView";
 
 Vue.use(VueRouter)
 
@@ -24,8 +26,13 @@ const routes = [
     },
     {
         path: '/order/taken/get',
-        name: 'order',
-        component: OrdersView
+        name: 'cookOrder',
+        component: CookOrderView
+    },
+    {
+        path: '/order/taken/get',
+        name: 'waiterOrder',
+        component: WaiterOrdersView
     },
     {
         path: "/user",
@@ -53,6 +60,12 @@ const routes = [
         path: "/work-shift",
         name: "createWorkShifts",
         component: CreateWorkShiftsView,
+    },
+
+    {
+        path: "/work-shift/:id/users",
+        name: "workersOnShift",
+        component: WorkersOnShiftView,
     },
 ]
 

@@ -27,10 +27,7 @@ export default {
   },
 
   async mounted() {
-    this.cooks = await this.$store.dispatch(
-        "getCooks",
-        this.$store.getters.getToken
-    );
+    this.cooks = await this.$store.dispatch("getCooks");
   },
 
   computed: {

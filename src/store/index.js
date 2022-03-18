@@ -87,15 +87,14 @@ export default new Vuex.Store({
         },
 
         async dismiss(context, id) {
-            const user = await fetch(`http://localhost/api-cafe/user/${id}/to-dismiss`, {
+            return await fetch(`http://localhost/api-cafe/user/${id}/to-dismiss`, {
                 method: "get",
                 headers: {
-                    "Authorization": `Bearer ${this.getters.getToken}`
+                    "Authorization": "Bearer " + this.getters.getToken
                 },
             })
                 .then(res => res.json())
-                .catch(e => console.log(e))
-            return user;
+                .catch(e => console.log(e));
         },
 
         async CreateUser(context, body) {
@@ -103,7 +102,7 @@ export default new Vuex.Store({
             for (let i in body) {
                 formData.append(i, body[i]);
             }
-            const user = await fetch(`http://localhost/api-cafe/user`, {
+            return await fetch(`http://localhost/api-cafe/user`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${this.getters.getToken}`
@@ -111,9 +110,9 @@ export default new Vuex.Store({
                 body: formData
             })
                 .then(res => res.json())
-                .catch(e => console.log(e))
-            return user;
+                .catch(e => console.log(e));
         },
+
 
         async GetWorkShifts() {
             return await fetch("http://localhost/api-cafe/work-shift", {
@@ -123,11 +122,13 @@ export default new Vuex.Store({
                     "Authorization": "Bearer " + this.getters.getToken
                 },
             })
-                .then(res => res.json()).catch(e => console.log(e));
+                .then(response => response.json())
+                .then(result => result)
+                .then(error => error)
         },
 
         async CreateWorkShift(context, body) {
-            const shift = await fetch(`http://localhost/api-cafe/work-shift`, {
+            return await fetch(`http://localhost/api-cafe/work-shift`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
@@ -136,8 +137,57 @@ export default new Vuex.Store({
                 body: JSON.stringify(body)
             })
                 .then(res => res.json())
+                .catch(e => console.log(e));
+        },
+
+        async CloseWorkShift(context, id) {
+            return await fetch(`http://localhost/api-cafe/work-shift/${id}}/close`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${this.getters.getToken}`
+                },
+            })
+                .then(res => res.json())
+                .catch(e => console.log(e));
+        },
+
+        async GetWorkersOnShift(context, id) {
+            return await fetch(`http://localhost/api-cafe/work-shift/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.getters.getToken}`
+                },
+            })
+                .then(response => response.json())
+                .then(result => result.data)
+                .then(error => error)
+        },
+
+        async addWorkerToShift(context, {shiftId, workerId}) {
+            // console.log(shiftId)
+            // console.log(workerId)
+            return await fetch(`http://localhost/api-cafe/work-shift/${shiftId}/user`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.getters.getToken}`
+                },
+                body: JSON.stringify({user_id: workerId})
+            })
+                .then(res => res.json())
+                .catch(e => console.log(e));
+        },
+
+        async activeWorkShift(context) {
+            return await fetch(`http://localhost/api-cafe/work-shift/active/get`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${this.getters.getToken}`
+                },
+            })
+                .then(res => res.json())
                 .catch(e => console.log(e))
-            return shift;
         },
 
         async WaiterGetOrders(context, id) {
@@ -160,14 +210,14 @@ export default new Vuex.Store({
             return context.commit("setRole", "cook")
         },
 
-        async getCooks(context, token) {
+        async getCooks(context) {
             const res = await fetch(
                 'http://localhost/api-cafe/order/taken/get',
                 {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        "Authorization": "Bearer " + token
+                        "Authorization": "Bearer " + this.getters.getToken
                     }
                 })
                 .then(response => response.json())
@@ -178,7 +228,7 @@ export default new Vuex.Store({
 
         async changeStatus(context, {id, status, token}) {
             const patchStatus = JSON.stringify({status})
-            const res = await fetch(
+            return await fetch(
                 `http://localhost/api-cafe/order/${id}/change-status`,
                 {
                     method: 'PATCH',
@@ -190,7 +240,6 @@ export default new Vuex.Store({
                 })
                 .then(response => response.json())
                 .then(result => result.data)
-            return res
         },
 
     },

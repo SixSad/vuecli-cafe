@@ -6,9 +6,8 @@
     <nav v-if="this.$store.getters.getToken">
       <router-link v-if="role==='admin'" :to="{name:'workers'}">Сотрудники</router-link>
       <router-link v-if="role==='admin'" :to="{name:'workShifts'}">Смены</router-link>
-      <router-link to="/order/taken/get" v-if="role==='cook'">Заказы</router-link>
-      <router-link to="#" v-if="role!=='cook'">Заказы</router-link>
-      <!--      <router-link to="/api-cafe/work-shift/1/order" v-if="role==='cook'">Заказы</router-link>-->
+      <router-link :to="{name:'cookOrder'}" v-if="role==='cook'">Заказы</router-link>
+      <router-link :to="{name:'waiterOrder'}" v-if="role==='waiter'">Заказы</router-link>
       <a @click="fetchLogout" class="cancel_button">Выход</a>
     </nav>
     <nav v-else>

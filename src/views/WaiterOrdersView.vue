@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "ShowOrder"
+  name: "WaiterOrdersView"
 }
 </script>
 
