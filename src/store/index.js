@@ -165,8 +165,6 @@ export default new Vuex.Store({
         },
 
         async addWorkerToShift(context, {shiftId, workerId}) {
-            // console.log(shiftId)
-            // console.log(workerId)
             return await fetch(`http://localhost/api-cafe/work-shift/${shiftId}/user`, {
                 method: "POST",
                 headers: {
@@ -177,17 +175,6 @@ export default new Vuex.Store({
             })
                 .then(res => res.json())
                 .catch(e => console.log(e));
-        },
-
-        async activeWorkShift(context) {
-            return await fetch(`http://localhost/api-cafe/work-shift/active/get`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${this.getters.getToken}`
-                },
-            })
-                .then(res => res.json())
-                .catch(e => console.log(e))
         },
 
         async WaiterGetOrders(context, id) {

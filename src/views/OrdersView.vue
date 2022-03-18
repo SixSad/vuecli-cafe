@@ -1,11 +1,22 @@
 <template>
-
+  <div>
+    <WaiterOrders v-if="role==='waiter'" :workShift="1"></WaiterOrders>
+    <CookOrders v-if="role==='cook'"></CookOrders>
+  </div>
 </template>
 
 <script>
-im
+import WaiterOrders from "@/components/Waiter/WaiterOrders";
+import CookOrders from "@/components/Cook/CookOrders";
+
 export default {
-  name: "Orders"
+  name: "Orders",
+  components: {WaiterOrders, CookOrders},
+  computed: {
+    role() {
+      return this.$store.getters.getRole;
+    }
+  },
 }
 </script>
 

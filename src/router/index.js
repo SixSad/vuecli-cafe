@@ -8,8 +8,7 @@ import CreateWorkersView from "@/views/CreateWorkersView";
 import WorkShiftsView from "@/views/WorkShiftsView";
 import CreateWorkShiftsView from "@/views/CreateWorkShiftsView";
 import WorkersOnShiftView from "@/views/WorkersOnShiftView";
-import CookOrderView from "@/views/CookOrderView";
-import WaiterOrdersView from "@/views/WaiterOrdersView";
+import OrdersView from "@/views/OrdersView";
 
 Vue.use(VueRouter)
 
@@ -25,15 +24,11 @@ const routes = [
         component: LoginView
     },
     {
-        path: '/order/taken/get',
-        name: 'cookOrder',
-        component: CookOrderView
+        path: '/orders',
+        name: 'orders',
+        component: OrdersView
     },
-    {
-        path: '/order/taken/get',
-        name: 'waiterOrder',
-        component: WaiterOrdersView
-    },
+
     {
         path: "/user",
         name: "workers",

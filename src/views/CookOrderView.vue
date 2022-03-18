@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import Orders from "@/components/Cook/Orders";
 
 export default {
   name: "CookView",

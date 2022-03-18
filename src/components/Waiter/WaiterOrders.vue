@@ -9,13 +9,21 @@
 
     <section class="employees">
       <article class="card">
-        <div v-for="(cook,index) in undoneOrders" :key="cook.id">
-          <span>{{ cook.table }}</span>
-          <span>{{ cook.status }}</span>
-          <span>{{ cook.price }}</span>
-          <span>{{ cook.shift_workers }}</span>
-          <span>{{ cook.create_at }}</span>
-          <button @click="changeStatus(cook.id, index)">Change</button>
+        <div>
+          <span>Столик №</span>
+          <span>Статус</span>
+          <span>Итого</span>
+          <span>Принял</span>
+          <span>Время</span>
+          <span>Изменить</span>
+        </div>
+        <div v-for="(order,index) in orders" :key="order.id">
+          <span>{{ order.table }}</span>
+          <span>{{ order.status }}</span>
+          <span>{{ order.price }}</span>
+          <span>{{ order.shift_workers }}</span>
+          <span>{{ order.create_at }}</span>
+          <button>Change</button>
         </div>
       </article>
     </section>
@@ -26,14 +34,16 @@
 <script>
 export default {
   name: "ShowOrder",
+  props: ['workShift'],
   data() {
     return {
-      currentWorkShift: '',
+      orders: [],
     }
   },
   async mounted() {
-    this.currentWorkShift = await this.$store.dispatch("activeWorkShift");
-    console.log(this.currentWorkShift);
+    const res = await this.$store.dispatch("WaiterGetOrders", this.workShift);
+    this.orders = res.data.orders
+    console.log(this.orders);
   }
 }
 </script>
